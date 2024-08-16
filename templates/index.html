@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Cancer Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div id="header-content" style="display: flex; align-items: center;">
+            <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Skin Cancer Detector Logo" style="height: 50px; margin-right: 10px;">
+            <h1 style="margin: 0;">Skin Cancer Detector</h1>
+        </div>
+        <nav style="margin-left: auto;">
+            <a href="/">Home</a>
+            <a href="/predict_image">Predict Skin Cancer</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Upload an Image to Predict Skin Cancer</h2>
+
+        <!-- Instructions Section -->
+        <section id="instructions">
+            <h3>Instructions for Taking a Photo:</h3>
+            <p>To get the most accurate prediction, please follow these instructions:</p>
+            <ul>
+                <li>Take a close-up photo of the suspected skin lesion.</li>
+                <li>Ensure that the image is clear and well-focused.</li>
+                <li>Avoid any shadows or glare on the lesion.</li>
+                <li>The lesion should be centered in the image, occupying most of the frame.</li>
+            </ul>
+            <h4>Example Images:</h4>
+            <div style="display: flex; gap: 10px;">
+                <img src="{{ url_for('static', filename='images/img1.jpg') }}" alt="Example Image 1" style="max-width: 100%; height: auto;">
+                <img src="{{ url_for('static', filename='images/img2.jpg') }}" alt="Example Image 2" style="max-width: 100%; height: auto;">
+            </div>
+        </section>
+
+        <!-- Class Definitions -->
+        <section id="class-definitions">
+            <h3>Class Definitions:</h3>
+            <ul>
+                <li><strong>Benign keratosis-like lesions:</strong> A non-cancerous skin growth that typically appears as a brown, black, or pale growth.</li>
+                <li><strong>Basal cell carcinoma:</strong> A type of skin cancer that begins in the basal cells and often appears as a slightly transparent bump on the skin.</li>
+                <li><strong>Actinic keratoses:</strong> A rough, scaly patch on the skin that develops from years of sun exposure and can sometimes develop into skin cancer.</li>
+                <li><strong>Vascular lesions:</strong> Abnormalities in the blood vessels of the skin that can be benign but sometimes may require treatment.</li>
+                <li><strong>Melanocytic nevi:</strong> Commonly known as moles, these are usually harmless growths on the skin.</li>
+                <li><strong>Melanoma:</strong> The most serious type of skin cancer that develops in the cells that produce melanin.</li>
+                <li><strong>Dermatofibroma:</strong> A common benign skin growth that usually feels like a hard bump.</li>
+            </ul>
+        </section>
+
+        <!-- File Upload Form -->
+        <form id="upload-form" enctype="multipart/form-data">
+            <label for="file">Upload an image:</label>
+            <input type="file" name="file" id="file" accept="image/*" required>
+            <br><br>
+            <img id="preview" src="#" alt="Image preview" style="display:none; max-width: 400px;">
+            <br><br>
+            <button type="submit">Predict</button>
+        </form>
+
+        <div id="result" style="display:none;">
+            <h2>Prediction Result</h2>
+            <canvas id="predictionChart"></canvas>
+            <p id="warning" style="display:none;">
+                Warning: Malignant case detected! Please seek immediate consultation with a medical professional. <a href="https://www.ontariohealth.ca/getting-health-care/cancer-services" target="_blank">Click here to learn more or take action.</a>
+            </p>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Skin Cancer Detector</p>
+    </footer>
+
+    <script>
+        document.getElementById('file').onchange = function (event) {
+            const [file] = event.target.files;
+            if (file) {
+                const preview = document.getElementById('preview');
+                preview.src = URL.createObjectURL(file);
+                preview.style.display = 'block';
+            }
+        };
+
+        let chartInstance = null;  // To keep track of the chart instance
+
+        document.getElementById('upload-form').onsubmit = async function (event) {
+            event.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('file', document.getElementById('file').files[0]);
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                console.log('Prediction result:', result);  // Debug: Log the result to the console
+
+                const labels = Object.keys(result);
+                const scores = Object.values(result).map(score => score * 100);  // Convert to percentage
+                console.log('Labels:', labels);  // Debug: Log labels
+                console.log('Scores:', scores);  // Debug: Log scores
+
+                // Determine colors based on class labels
+                const backgroundColors = labels.map(label => 
+                    label === 'Melanoma' || label === 'Basal cell carcinoma' ? 'rgba(255, 99, 132, 0.6)' : 'rgba(75, 192, 192, 0.6)'
+                );
+                const borderColors = labels.map(label => 
+                    label === 'Melanoma' || label === 'Basal cell carcinoma' ? 'rgba(255, 99, 132, 1)' : 'rgba(75, 192, 192, 1)'
+                );
+
+                const ctx = document.getElementById('predictionChart').getContext('2d');
+
+                // Destroy the previous chart instance if it exists
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+
+                chartInstance = new Chart(ctx, {
+                    type: 'bar',  // Horizontal bar chart
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Prediction Accuracy (%)',
+                            data: scores,
+                            backgroundColor: backgroundColors,
+                            borderColor: borderColors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',  // Makes the bar chart horizontal
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                max: 100
+                            },
+                            y: {
+                                display: true,
+                                ticks: {
+                                    autoSkip: false
+                                }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + context.parsed.x.toFixed(2) + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                document.getElementById('result').style.display = 'block';
+
+                // Check if the prediction indicates a malignant case (e.g., Melanoma)
+                const malignantConditions = ["Melanoma", "Basal cell carcinoma"];
+                const malignantDetected = labels.some((label, index) => malignantConditions.includes(label) && scores[index] > 50);
+
+                if (malignantDetected) {
+                    document.getElementById('warning').style.display = 'block';
+                } else {
+                    document.getElementById('warning').style.display = 'none';
+                }
+
+            } catch (error) {
+                console.error('Error during prediction:', error);
+            }
+        };
+    </script>
+</body>
+</html>

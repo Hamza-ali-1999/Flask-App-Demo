@@ -1,0 +1,149 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #004a99;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+    text-align: center;
+    flex: 1;
+}
+
+nav {
+    flex-shrink: 0;
+}
+
+nav a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    padding: 20px;
+}
+
+h2 {
+    color: #004a99;
+    font-size: 22px;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+button {
+    background-color: #004a99;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #003366;
+}
+
+footer {
+    background-color: #004a99;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    font-size: 14px;
+}
+
+/* Specific Styles for the Warning Message */
+#warning {
+    background-color: #ffcccc;
+    color: #cc0000;
+    border: 1px solid #cc0000;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+    display: none;
+}
+
+#warning a {
+    color: #cc0000;
+    text-decoration: underline;
+}
+
+#warning a:hover {
+    color: #990000;
+}
+
+/* Ensure the body and html take full height of the screen */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main content area will grow to take up the remaining space */
+main {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Footer will always be at the bottom */
+footer {
+    background-color: #004a99;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    font-size: 14px;
+    position: relative;
+    bottom: 0;
+}
+
+#class-definitions {
+    margin-bottom: 20px;
+}
+
+#class-definitions h3 {
+    color: #004a99;
+    margin-bottom: 10px;
+}
+
+#class-definitions ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+#class-definitions li {
+    margin-bottom: 10px;
+}
+
+#result {
+    margin-top: 30px;
+}
+
+canvas#predictionChart {
+    margin-top: 20px;
+}

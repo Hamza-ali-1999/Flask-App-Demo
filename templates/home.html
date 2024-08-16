@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Cancer Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div id="header-content" style="display: flex; align-items: center;">
+            <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Skin Cancer Detector Logo" style="height: 50px; margin-right: 10px;">
+            <h1 style="margin: 0;">Skin Cancer Detector</h1>
+        </div>
+        <nav style="margin-left: auto;">
+            <a href="/">Home</a>
+            <a href="/predict_image">Predict Skin Cancer</a>
+        </nav>
+    </header>
+    <main>
+        <!-- About Skin Cancer Section with Image -->
+        <section id="about-skin-cancer">
+            <h2>About Skin Cancer</h2>
+            <p>Skin cancer is the most common type of cancer, affecting millions of people worldwide each year. It occurs when skin cells grow uncontrollably and form a mass of tissue known as a tumor. If left untreated, skin cancer can spread to other parts of the body and become life-threatening.</p>
+            <img src="{{ url_for('static', filename='images/sample.PNG') }}" alt="Skin Cancer Sample" style="max-width: 100%; height: auto;">
+        </section>
+
+        <section>
+            <h2>Types of Skin Cancer</h2>
+            <ul>
+                <li><strong>Basal cell carcinoma (BCC):</strong> The most common type, often appearing as a small, shiny bump or nodule on the skin.</li>
+                <li><strong>Squamous cell carcinoma (SCC):</strong> The second most common type, which may appear as a firm red nodule, a flat lesion with a scaly crust, or a new sore that doesn't heal.</li>
+                <li><strong>Melanoma:</strong> The most serious type of skin cancer, which can develop in an existing mole or appear as a new dark spot on the skin.</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Facts about Skin Cancer</h2>
+            <ul>
+                <li>Skin cancer is the most common type of cancer in Canada, with thousands of new cases diagnosed every year.</li>
+                <li>Melanoma, though less common, is the most dangerous form of skin cancer and accounts for the majority of skin cancer-related deaths in Canada.</li>
+                <li>Early detection and treatment of skin cancer significantly improve the chances of successful outcomes.</li>
+                <li>Canadians, especially those with fair skin, are at higher risk of developing skin cancer due to UV exposure, even in northern climates.</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Use Our AI Model to Predict Skin Cancer</h2>
+            <p>Our AI-powered model can help in identifying different types of skin cancer from images. Visit the <a href="/predict_image">prediction page</a> to try it out.</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Skin Cancer Detector</p>
+    </footer>
+</body>
+</html>
