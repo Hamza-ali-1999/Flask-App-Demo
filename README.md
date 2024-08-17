@@ -1,16 +1,78 @@
-# Skin Cancer Detection Demo (Flask Web Application)
+# **Skin Cancer Lesion Detection Project**
 
-## Overview
-This repository contains a Flask web application designed for the early and accurate detection of skin cancer. The application utilizes a deep learning model to classify skin lesions, helping healthcare providers and patients identify potential cases of skin cancer quickly and efficiently. Early detection is crucial in treating skin cancer, particularly melanoma, which can be deadly if not caught early.
+## **Overview**
 
-## Problem Statement
-Skin cancer is one of the most common and rapidly increasing forms of cancer worldwide. Traditional methods of diagnosis, such as visual inspections, can be subjective and may lead to misdiagnosis. This application addresses the need for a reliable, accessible, and non-invasive tool to assist in the early detection of skin cancer, ultimately improving patient outcomes.
+Skin cancer is one of the most prevalent forms of cancer globally, affecting millions each year. Early detection is crucial for effective treatment, as delayed diagnosis can lead to severe consequences. This project aims to develop an accurate, accessible, and easy-to-use skin cancer detection system using machine learning, particularly focusing on image classification to assist in early detection and diagnosis.
 
-## Benefits of the Application
-Early Detection: Assists in identifying skin cancer at an early stage, increasing the chances of successful treatment.
-Accessibility: Provides an easy-to-use interface accessible to both healthcare providers and patients.
-Efficiency: Reduces the burden on dermatologists by offering an AI-powered second opinion.
-Scalability: Deployable across various environments, making it accessible globally.
+## **Problem Statement**
+
+- **Global Impact**: Skin cancer is the most common cancer worldwide.
+- **Need for Early Detection**: Early diagnosis significantly improves treatment outcomes.
+- **Challenge in Diagnosis**: The visual nature of skin cancer makes it difficult to diagnose accurately, with high variability in appearance.
+- **Objective**: Develop a machine learning model that classifies skin lesions as benign or malignant, providing an accessible tool for both patients and healthcare professionals.
+
+## **Project Significance**
+
+An accurate skin cancer detection system can:
+- **Reduce Treatment Costs**: Early diagnosis can lead to early intervention, reducing overall treatment costs.
+- **Increase Accessibility**: Providing patients with a tool for frequent self-checks can lead to earlier detection.
+- **Improve Patient Outcomes**: Quick and accurate diagnosis can set patient priority and improve treatment processes.
+
+## **Methodology**
+
+### **Model Development**
+
+- **Past Projects**: 
+  - Participated in a Kaggle competition for skin cancer binary classification.
+  - Experimented with YOLO v5 for skin lesion object detection, though this was not integrated into the final deployment due to viability concerns.
+
+- **Model Benchmarking**:
+  - Initially trained models like EfficientNet and DenseNet, focusing on loss function metrics to compare performance against publicly available benchmarks.
+  - Conducted manual evaluation of model predictions to ensure reliability, particularly in distinguishing between malignant and benign cases.
+
+- **Model Update**:
+  - For the final deployment, the trained model was replaced with a pre-trained Vision Transformer model from Hugging Face. This decision was made to enhance the accuracy and reliability of the predictions.
+
+### **Machine Learning Canvas**
+
+- **Prediction Task**: A classification task on skin lesion images with possible outcomes being benign or malignant.
+- **Value Proposition**: The end-users, primarily healthcare professionals and patients, benefit from an accessible and accurate diagnosis tool.
+- **Data Collection & Sources**: Initial training data was sourced from public datasets (e.g., ISIC). Continuous updates would rely on new patient data, if accessible.
+- **Model Deployment**: The model is deployed using Docker and Google Cloud Platform (GCP), ensuring scalability and accessibility.
+- **Challenges**: Faced issues with library conflicts, front-end design, and managing the Docker image size.
+
+## **Model Deployment**
+
+### **Dockerization**
+
+- Created a Dockerfile to containerize the Flask application.
+- Built the Docker image and pushed it to Docker Hub for easy deployment across different environments.
+
+### **Google Cloud Platform (GCP) Setup**
+
+- Initialized a cloud project on GCP and enabled necessary APIs.
+- Deployed the Docker image using Google Cloud Run, which offers a serverless deployment option.
+- Manually tested the deployment to ensure the application runs as expected.
+
+### **Challenges Faced**
+
+- **Library Conflicts**: Encountered issues with conflicting library versions, which required careful management during deployment.
+- **Front-End Development**: Designing an intuitive and user-friendly interface was a challenge, given the technical nature of the project.
+- **Docker Image Optimization**: The initial Docker image was too large due to the inclusion of the model file; in future iterations, external model loading will be considered.
+- **Model Update**: Replaced the initially trained model with a Vision Transformer from Hugging Face for more accurate and robust predictions.
+
+## **Demonstration & Future Work**
+
+The deployed application can be accessed online, allowing users to upload images of skin lesions for analysis. The application provides predictions along with a confidence score, guiding users in seeking further medical advice.
+
+### **Demo Link**: [Skin Cancer Detector](https://scdwebdeployment-kivpee72oq-uc.a.run.app/)
+
+### **Future Enhancements**
+
+- **Ensemble Models**: Integrating additional patient data, such as blood tests, could enhance the accuracy of the system through ensemble modeling.
+- **System Integration**: Working towards integration with healthcare systems for real-time patient data access and better prediction accuracy.
+- **Optimization**: Refining the Docker image and improving the application's responsiveness to handle higher traffic and larger datasets.
+
 
 ## Repository Structure
 app.py: The main Python file that contains the Flask application. This file sets up the routes, handles image uploads, and performs predictions using the pre-trained model.
